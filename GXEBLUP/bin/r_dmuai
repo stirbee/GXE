@@ -1,0 +1,58 @@
+#!/bin/bash
+if [  $# -eq 0 ]
+  then
+    name=milk
+  else
+    name=$1
+fi
+
+export name
+ulimit -s unlimited
+time ../../bin/dmu1 < $name.DIR > $name.lst
+if [ -s MODINF ]
+  then
+    echo '1'  >> $name.lst
+    time ../../bin/dmuai  >> $name.lst
+fi
+rm -f PEDFILE* AINV*
+rm -f CODE_TABLE DMU1.dir DMUAI.dir DMU_LOG
+rm -f DUMMY FSPAKWK MODINF PARIN LEVAL Latest_parm
+rm -f RCDATA_I RCDATA_R
+if [ -f INBREED ]
+  then
+    if [ -s INBREED ]
+      then
+        mv INBREED $name.INBREED
+     else
+       rm INBREED
+    fi
+fi
+
+if [ -f CVREST.DIR ]
+  then
+  rm CVREST.DIR 
+fi          
+if [ -s SOL ]
+  then
+   mv SOL $name.SOL
+  else
+    rm -f SOL
+fi
+if [ -s RESIDUAL ]
+  then
+   mv RESIDUAL $name.RESIDUAL
+  else
+    rm -f RESIDUAL 
+fi
+if [ -s PAROUT  ]
+  then
+   mv PAROUT $name.PAROUT
+   mv PAROUT_STD $name.PAROUT_STD
+   cmp -s  $name.PAROUT $name.PAROUT.org
+   if [ $? -eq 0 ]
+     then
+       echo "Example $name in $PWD OK" >> ../run_ex.log                    
+     else 
+       echo "Example $name in $PWD failed - Check output files" >> ../run_ex.log
+     fi
+fi                               

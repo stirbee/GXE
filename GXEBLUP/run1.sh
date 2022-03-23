@@ -1,0 +1,1 @@
+./run2.sh /home/songhailiang/Ding-GxE/maize/GS/PHE1/PHE1rep1/data.txt /home/songhailiang/Ding-GxE/maize/GS/PHE1/PHE1rep1/genotype 5 5
